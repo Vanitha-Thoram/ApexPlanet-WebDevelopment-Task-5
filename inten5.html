@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sofia Cafes | Final Project</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#f8f5f2;
+}
+header,footer{
+  background:#6f4e37;
+  color:white;
+  text-align:center;
+  padding:15px;
+}
+nav{
+  background:#d2b48c;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+nav a{
+  padding:10px 15px;
+  text-decoration:none;
+  font-weight:bold;
+  color:#4b2e1e;
+}
+.container{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:15px;
+  padding:15px;
+}
+.card{
+  background:white;
+  padding:15px;
+  border-radius:8px;
+  box-shadow:0 0 6px rgba(0,0,0,.1);
+}
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;
+}
+.gallery img{
+  width:100%;
+  height:120px;
+  object-fit:cover;
+  border-radius:8px;
+}
+.products,.cart{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.product,.cart-item{
+  background:#fff3cd;
+  padding:10px;
+  border-radius:6px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+button{
+  background:#6f4e37;
+  color:white;
+  border:none;
+  padding:6px 10px;
+  border-radius:5px;
+  cursor:pointer;
+}
+button:hover{background:#5a3c28;}
+.total{
+  font-weight:bold;
+  margin-top:10px;
+}
+@media(max-width:600px){
+  header h1{font-size:22px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>☕ Sofia Cafes</h1>
+  <p>Complete Web Application (Task 1–5)</p>
+</header>
+
+<nav>
+  <a href="#about">About</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#menu">Menu</a>
+  <a href="#cart">Cart</a>
+</nav>
+
+<div class="container">
+
+<!-- ABOUT -->
+<div class="card" id="about">
+  <h2>About Sofia Cafes</h2>
+  <p>Sofia Cafes serves premium coffee and snacks in a cozy environment. This project demonstrates HTML, CSS, and JavaScript integration.</p>
+</div>
+
+<!-- GALLERY -->
+<div class="card" id="gallery">
+  <h2>Cafe Gallery</h2>
+  <div class="gallery">
+    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93" loading="lazy">
+    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085" loading="lazy">
+    <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0" loading="lazy">
+    <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814" loading="lazy">
+  </div>
+</div>
+
+<!-- MENU -->
+<div class="card" id="menu">
+  <h2>Menu</h2>
+  <div class="products" id="productList"></div>
+</div>
+
+<!-- CART -->
+<div class="card" id="cart">
+  <h2>🛒 Cart</h2>
+  <div class="cart" id="cartItems"></div>
+  <p class="total">Total: ₹<span id="totalCost">0</span></p>
+</div>
+
+</div>
+
+<footer>
+  <p>© 2026 Sofia Cafes | Final Capstone Project</p>
+</footer>
+
+<script>
+/* PRODUCTS DATA */
+const products=[
+  {id:1,name:"Espresso",price:80},
+  {id:2,name:"Cappuccino",price:120},
+  {id:3,name:"Cold Coffee",price:150},
+  {id:4,name:"Sandwich",price:100},
+  {id:5,name:"Cake",price:90}
+];
+
+let cart=[];
+
+/* DISPLAY PRODUCTS */
+function displayProducts(){
+  let list=document.getElementById("productList");
+  list.innerHTML="";
+  products.forEach(p=>{
+    let div=document.createElement("div");
+    div.className="product";
+    div.innerHTML=`
+      <span>${p.name} - ₹${p.price}</span>
+      <button onclick="addToCart(${p.id})">Add</button>
+    `;
+    list.appendChild(div);
+  });
+}
+
+/* ADD TO CART */
+function addToCart(id){
+  let item=products.find(p=>p.id===id);
+  cart.push(item);
+  updateCart();
+}
+
+/* REMOVE FROM CART */
+function removeFromCart(index){
+  cart.splice(index,1);
+  updateCart();
+}
+
+/* UPDATE CART */
+function updateCart(){
+  let cartBox=document.getElementById("cartItems");
+  let total=0;
+  cartBox.innerHTML="";
+  cart.forEach((item,index)=>{
+    total+=item.price;
+    let div=document.createElement("div");
+    div.className="cart-item";
+    div.innerHTML=`
+      <span>${item.name} - ₹${item.price}</span>
+      <button onclick="removeFromCart(${index})">Remove</button>
+    `;
+    cartBox.appendChild(div);
+  });
+  document.getElementById("totalCost").textContent=total;
+}
+
+displayProducts();
+</script>
+
+</body>
+</html>
